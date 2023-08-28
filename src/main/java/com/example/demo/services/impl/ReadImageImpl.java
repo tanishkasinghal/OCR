@@ -17,7 +17,16 @@ public class ReadImageImpl implements ReadImageService {
         String str = null;
         try {
             // Convert MultipartFile to temporary File
-            File tempFile = File.createTempFile("temp", ".png");
+            String originalFilename = file.getOriginalFilename();
+            String extension="";
+            if (originalFilename != null && originalFilename.contains(".")) {
+                extension= originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
+                System.out.println("extension "+extension);
+            } else {
+                return "Not a Valid image "; // No valid extension found
+            }
+
+            File tempFile = File.createTempFile("temp", "." + extension);
             file.transferTo(tempFile);
 
             str = image.doOCR(tempFile);
