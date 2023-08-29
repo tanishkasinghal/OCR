@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class ReadImageImpl implements ReadImageService {
@@ -30,8 +32,15 @@ public class ReadImageImpl implements ReadImageService {
             file.transferTo(tempFile);
 
             str = image.doOCR(tempFile);
-            System.out.println("Data From image is " + str);
 
+
+            System.out.println(str);
+            Pattern namePattern = Pattern.compile("Name: (.+)");
+            Matcher nameMatcher = namePattern.matcher(str);
+//            if (nameMatcher.find()) {
+//                String name = nameMatcher.group(1);
+//                System.out.println("Name: " + name);
+//            }
             tempFile.delete(); // Delete the temporary file after OCR
         } catch (Exception e) {
             System.out.println("Exception " + e.getMessage());
