@@ -4,7 +4,13 @@ import com.example.demo.services.ReadImageService;
 import net.sourceforge.tess4j.ITesseract;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -28,20 +34,36 @@ public class ReadImageImpl implements ReadImageService {
                 return "Not a Valid image "; // No valid extension found
             }
 
-            File tempFile = File.createTempFile("temp", "." + extension);
-            file.transferTo(tempFile);
 
-            str = image.doOCR(tempFile);
+            String apiUrl = "http://localhost:5000/upload"; // Replace with your Python API URL
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
+            MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+            body.add("file", file.getResource());
 
-            System.out.println(str);
-            Pattern namePattern = Pattern.compile("Name: (.+)");
-            Matcher nameMatcher = namePattern.matcher(str);
+            ResponseEntity<String> response = new RestTemplate().postForEntity(apiUrl, body, String.class);
+
+            if (response.getStatusCode().is2xxSuccessful()) {
+                return "Image processed successfully";
+            } else {
+                return "Failed to process the image";
+            }
+//
+//            File tempFile = File.createTempFile("temp", "." + extension);
+//            file.transferTo(tempFile);
+//            str=file.toString();
+//            str = image.doOCR(tempFile);
+//
+//
+//            System.out.println(str);
+//            Pattern namePattern = Pattern.compile("Name: (.+)");
+//            Matcher nameMatcher = namePattern.matcher(str);
 //            if (nameMatcher.find()) {
 //                String name = nameMatcher.group(1);
 //                System.out.println("Name: " + name);
 //            }
-            tempFile.delete(); // Delete the temporary file after OCR
+//            tempFile.delete(); // Delete the temporary file after OCR
         } catch (Exception e) {
             System.out.println("Exception " + e.getMessage());
         }
