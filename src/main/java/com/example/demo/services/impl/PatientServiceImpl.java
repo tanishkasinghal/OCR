@@ -16,6 +16,7 @@ public class PatientServiceImpl implements PatientService {
     public PatientDetails addPatient(PatientDetails patient) {
         String randomDepId= UUID.randomUUID().toString();
         patient.setId(randomDepId);
+        System.out.println(patient.getSex());
         return this.patientRepository.save(patient);
     }
 }

@@ -1,6 +1,6 @@
 
 import logging as logger
-
+import mysql.connector
 from flask import Flask, request, jsonify
 from werkzeug.utils import secure_filename
 import os
@@ -34,19 +34,17 @@ def upload_file():
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
         file.save(os.path.join('uploads', filename))
-        
+        db_patterns = get_regex_patterns_from_db()
         if filename.endswith('.pdf'):
-            # If it's a PDF, extract text and send data to another API
             pdf_path = os.path.join('uploads', filename)
             extracted_text = extract_text_from_pdf(pdf_path)
-            extracted_info = extract_info_from_text(extracted_text)
+            extracted_info = extract_info_from_text(extracted_text,db_patterns)
             send_file_to_api(extracted_info)
-            
             return jsonify({'message': 'File successfully uploaded and processed.'})
         elif filename.endswith(('.png', '.jpg', '.jpeg', '.gif')):
             image_path = os.path.join('uploads', filename)
             extracted_text = extract_text_from_image(image_path)
-            extracted_info = extract_info_from_text(extracted_text)
+            extracted_info = extract_info_from_text(extracted_text,db_patterns)
             send_file_to_api(extracted_info)
             return jsonify({'message': 'Image uploaded. Processing logic not implemented.'})
         else:
@@ -54,6 +52,16 @@ def upload_file():
 
     else:
         return 'Invalid file type'
+
+def create_connection():
+    # Connect to the MySQL database (hosted locally)
+    conn = mysql.connector.connect(
+        host='localhost',
+        user='root',
+        password='Admin@123',
+        database='dictionary'
+    )
+    return conn
 
 def extract_text_from_pdf(pdf_path):
     text = ""
@@ -74,54 +82,64 @@ def extract_text_from_image(image_path):
     extracted_text = pytesseract.image_to_string(im_bw)
     return extracted_text
 
-def extract_info_from_text(text):
+def extract_info_from_text(text, db_patterns):
+    #print(db_patterns)
     info = {}
-    
-    # Extract Name
-    name_pattern = r"Name: (.+)"
-    name_match = re.search(name_pattern, text)
-    if name_match:
-        info["Name"] = name_match.group(1)
-    
-    # Extract Age
-    age_pattern = r"Age : (\d+)"
-    age_match = re.search(age_pattern, text)
-    if age_match:
-        info["Age"] = int(age_match.group(1))
-    
-    # Extract Mobile Number
-    mobile_pattern = r"Mobile No : (\d+)"
-    mobile_match = re.search(mobile_pattern, text)
-    if mobile_match:
-        info["Mobile"] = mobile_match.group(1)
-    
-    # Extract Sex
-    sex_pattern = r"Sex : (.+)"
-    sex_match = re.search(sex_pattern, text)
-    if sex_match:
-        info["Sex"] = sex_match.group(1)
-    
-    # Extract Address
-    address_pattern = r"Address :((?:.*\n)*.*\))\s*"
-    address_match = re.search(address_pattern, text)
-    if address_match:
-        address = address_match.group(1).strip()
-        info["Address"] = address
-    
+
+    for pattern in db_patterns:
+        fieldname = pattern["fieldname"]
+        # regex_pattern = pattern["pattern"]
+        initial_pattern = pattern["pattern"]
+
+        # Appending ": (.+)" to the existing regex pattern
+        if fieldname in {'name', 'sex'}:
+            regex_pattern = initial_pattern + r'\s*:\s*(.+)'
+        elif fieldname in {'age','contact'}:
+            regex_pattern = initial_pattern + r'\s*:\s*(\d+)'
+        else:
+            regex_pattern = initial_pattern + r'\s*:\s*((?:.*\n)*.*\))\s*'
+
+        match = re.search(regex_pattern, text, re.IGNORECASE)
+        if match:
+            info[fieldname] = match.group(1).strip()
+    #print(info)
     return info
+
+def get_regex_patterns_from_db():
+    db_patterns = []
+    connection = None
+
+    try:
+        connection = create_connection()
+        cursor = connection.cursor(dictionary=True)
+
+        # Execute a SELECT query to retrieve regex patterns from the database
+        cursor.execute("SELECT fieldname, pattern FROM ocr_dict")
+
+        # Fetch all rows as a list of dictionaries
+        db_patterns = cursor.fetchall()
+
+    except mysql.connector.Error as e:
+        print(f"MySQL error: {e}")
+
+    finally:
+        if connection:
+            connection.close()
+
+    return db_patterns
 
 
 def send_file_to_api(data):
     url = 'http://localhost:8082/ocr/'
     headers = {'Content-Type': 'application/json'}
     patient_json = {
-        "name": data.get("Name"),
-        "age": data.get("Age"),
-        "contact": data.get("Mobile"),
-        "sex": data.get("Sex"),
-        "address": data.get("Address")
+        "name": data.get("name"),
+        "age": data.get("age"),
+        "contact": data.get("contact"),
+        "sex": data.get("sex"),
+        "address": data.get("address")
     }
-    
+    print(patient_json)
     response = requests.post(url, json=patient_json, headers=headers)
 
     

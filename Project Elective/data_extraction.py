@@ -1,5 +1,16 @@
 import PyPDF2
 import requests
+import mysql.connector
+
+def create_connection():
+    # Connect to the MySQL database
+    conn = mysql.connector.connect(
+        host='localhost',
+        user='root',
+        password='Admin123',
+        database='ocr'
+    )
+    return conn
 
 def extract_text_from_pdf(pdf_path):
     text = ""
@@ -78,5 +89,5 @@ if __name__ == "__main__":
         text = file.read()
     
     extracted_info = extract_info_from_text(text)
-    send_file_to_api(extracted_info)
+    # send_file_to_api(extracted_info)
     print(extracted_info)
