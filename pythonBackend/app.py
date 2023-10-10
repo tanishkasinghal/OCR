@@ -38,6 +38,7 @@ def upload_file():
         if filename.endswith('.pdf'):
             pdf_path = os.path.join('uploads', filename)
             extracted_text = extract_text_from_pdf(pdf_path)
+            print(extracted_text)
             extracted_info = extract_info_from_text(extracted_text,db_patterns)
             send_file_to_api(extracted_info)
             return jsonify({'message': 'File successfully uploaded and processed.'})
@@ -95,9 +96,10 @@ def extract_info_from_text(text, db_patterns):
         if fieldname in {'name', 'sex'}:
             regex_pattern = initial_pattern + r'\s*:\s*(.+)'
         elif fieldname in {'age','contact'}:
-            regex_pattern = initial_pattern + r'\s*:\s*(\d+)'
+            regex_pattern = initial_pattern + r'\s*:\s*(\d{4}-\d{2}-\d{2}|\d+)'
         else:
-            regex_pattern = initial_pattern + r'\s*:\s*((?:.*\n)*.*\))\s*'
+            # regex_pattern = initial_pattern + r'\s*:\s*((?:.*\n)*.*\))\s*'
+            regex_pattern = initial_pattern + r'\s*:\s*(.*?)(?=\w+\s*:|\Z)'
 
         match = re.search(regex_pattern, text, re.IGNORECASE)
         if match:

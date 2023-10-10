@@ -1,29 +1,36 @@
-Visit No:1/ Token No :8 Registration No: 20230058132 
-Room No: Shahid Mahendra Karma Memorial Hospital Dimrapal, Jagdalpur, 1st,B6 
-Department : Ophthalmology Name: Mr. Anman Kumar Verma 
-Dept. Reg. No : 20230003717 
-Patient Type : General Date of Registration : 07/08/ 2023 
-10.27 AM 
-Remark : 
-VA 
-(ony Late Baliram Kashyap Memorial Govt 
-Medical College Jagdalpur 
-Ae LATE BALIRAM KASHYAP GOVT. MEDICAL 
-COLLEGE,, Dimrapal, Tokapal, BASTAR, 
-CHHATTISGARH, 494001 
-BASTAR,CHHATTISGARH,Pin: 494001 
-lews 
-Adu 6|6 
-foor lo doy tnild Rdea' bisc kago(walo). OUT PATIENTRECORD 
-(Duplicate Slip) 
-LE Registration Amount : Rs. 0 
-Mobile No : 9179273937 
-Sex : M 
-Address :Kahira Garh, KHAIRGARH CHHUIKHADAN 
-GANDAI(CHHATTISGARH) 
-clo. -Radres uoatau 
-Rest fot (o days EYE 
-Age : 25Y 1M 1D 
-:V(ouuthuits 
-ROOM NO 06 FIRST FLOOR MLC Patient : NO 
-day 
+TEST REPORT
+Visit Id: R10552453ÌRÇ*W8U*Î
+MS Tanishka Singhal
+22 Year(s)
+1000140566FName:
+Age:
+Ref. No.Gender:
+Referring Dr.:Registered:
+Reported:
+Report Status:06/02/2023 16:0806/02/2023 10:17
+FinalContact No.:
+DR Heera RameshSample Source: KAUVERY HOSPITAL-ECITY.
+EC230000145089 OOBEC220054350 UHID: HVID:
+CLINICAL PATHOLOGY
+Test Name Test Result Biological Reference Range Sample
+PHYSICAL EXAMINATION
+PALE YELLOW 0 Colour
+CLEAR 0 Clarity
+URINE CHEMICAL EXAMINATION (Automated)
+Refractive Index1015 1003 - 10300 Specific gravity
+Indicator method6.0  pH 4.6 - 8.0 pH0 Reaction
+Gries MethodNEGATIVE NEGATIVE 0 Nitrites
+Protein Error of pH IndicatorNOT PRESENT 0 Albumin
+Nitroprusside MethodNEGATIVE NIL0 Urine ketone bodies
+Azo coupling methodNORMAL 0 Urobilinogen
+Azo coupling methodNOT PRESENT NIL0 Bile salt
+Azo coupling methodNOT PRESENT NIL0 Bile pigment
+Enzyme Method (GOD POD)NIL NIL           : Normal
+Trace       : 50 mg/dL
++             : 100 mg/dL
+++           : 250 mg/dL
++++         : 500 mg/dL
+++++       : 2000 mg/dL0 Urine Glucose
+Measurement of Leukocyte Esterase activityNEGATIVE NEGATIVE 0 Leukocyte esterase
+Page 1 of 5Sample collection time is mentioned at the end of the Report.
+Reference Laboratory | Toll Free: 1800 425 1974 | Web: www.anandlab.com | Email: enquiry@anandlab.comC/O Kauvery Hospital, No 92/1 B, HP Avenue, Konappana Agrahara,Village Begur Hubli, Electronics City,   Blore South-560100Anand Diagnostic Laboratory  Pvt Ltd - A Neuberg Associate • Neuberg Anand Reference Laboratory Pvt Ltd

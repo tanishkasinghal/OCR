@@ -1,6 +1,6 @@
 import cv2
 import pytesseract
-image = cv2.imread('images/aman_hospital_page-0001.jpg')
+image = cv2.imread('/home/tanishka/Pictures/tanihska_singhal.png-0001')
 
 gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
