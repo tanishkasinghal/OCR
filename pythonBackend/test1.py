@@ -25,6 +25,6 @@ for filename in os.listdir(pdf_directory):
         # Make API call with the PDF file
         api_response = make_api_call(pdf_path)
         file_count += 1
-        if file_count == 10:
+        if file_count == 100:
             print("Processed 10 files. Exiting.")
             break

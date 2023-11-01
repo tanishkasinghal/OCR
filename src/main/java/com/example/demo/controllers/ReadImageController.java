@@ -17,10 +17,17 @@ public class ReadImageController {
     private ReadImageService readImageService;
     @Autowired
     private PatientService patientService;
+//    @PostMapping("/readImage")
+//    public String readImage(@RequestParam("image")MultipartFile image){
+//        return readImageService.readImage(image);
+//    }
+
     @PostMapping("/readImage")
-    public String readImage(@RequestParam("image")MultipartFile image){
+    public ResponseEntity<String> readImage(@RequestParam("image")MultipartFile image){
         return readImageService.readImage(image);
     }
+
+
     @PostMapping("/")
     public ResponseEntity<PatientDetails> addPatient(@Valid @RequestBody PatientDetails patient){
         PatientDetails newEmployee=this.patientService.addPatient(patient);

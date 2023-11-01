@@ -1,5 +1,6 @@
 package com.example.demo.services.impl;
 
+import com.example.demo.model.PatientDetails;
 import com.example.demo.services.ReadImageService;
 import net.sourceforge.tess4j.ITesseract;
 import net.sourceforge.tess4j.Tesseract;
@@ -20,9 +21,8 @@ import java.util.regex.Pattern;
 @Service
 public class ReadImageImpl implements ReadImageService {
     @Override
-    public String readImage(MultipartFile file) {
+    public ResponseEntity<String> readImage(MultipartFile file) {
         ITesseract image = new Tesseract();
-        String str = null;
         try {
             // Convert MultipartFile to temporary File
             String originalFilename = file.getOriginalFilename();
@@ -31,7 +31,7 @@ public class ReadImageImpl implements ReadImageService {
                 extension= originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
                 System.out.println("extension "+extension);
             } else {
-                return "Not a Valid image "; // No valid extension found
+                return ResponseEntity.badRequest().body("Not a Valid image");
             }
 
 
@@ -43,11 +43,11 @@ public class ReadImageImpl implements ReadImageService {
             body.add("file", file.getResource());
 
             ResponseEntity<String> response = new RestTemplate().postForEntity(apiUrl, body, String.class);
-
+            System.out.println(response.toString());
             if (response.getStatusCode().is2xxSuccessful()) {
-                return "Image processed successfully";
+                return response;
             } else {
-                return "Failed to process the image";
+                return ResponseEntity.badRequest().body("Not a Valid image");
             }
 //
 //            File tempFile = File.createTempFile("temp", "." + extension);
@@ -67,6 +67,7 @@ public class ReadImageImpl implements ReadImageService {
         } catch (Exception e) {
             System.out.println("Exception " + e.getMessage());
         }
-        return str;
+        return ResponseEntity.badRequest().body("Not a Valid image");
     }
+
 }

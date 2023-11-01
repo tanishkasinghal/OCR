@@ -22,6 +22,7 @@ def allowed_file(filename):
 
 @flaskAppInstance.route('/upload', methods=['POST'])
 def upload_file():
+    print("aya")
     if 'file' not in request.files:
         return 'No file part'
 
@@ -39,21 +40,14 @@ def upload_file():
             extracted_text = extract_text_from_pdf(pdf_path)
             print(extracted_text)
             extracted_info = extract_info_from_text(extracted_text,db_patterns)
-            # send_file_to_api(extracted_info)
-            
-            return jsonify({
-                'message': 'File successfully uploaded and processed.',
-                'data': get_object(extracted_info)  # Include the extracted information here
-            })
+            send_file_to_api(extracted_info)
+            return jsonify({'message': 'File successfully uploaded and processed.'})
         elif filename.endswith(('.png', '.jpg', '.jpeg', '.gif')):
             image_path = os.path.join('uploads', filename)
             extracted_text = extract_text_from_image(image_path)
             extracted_info = extract_info_from_text(extracted_text,db_patterns)
-            # send_file_to_api(extracted_info)
-            return jsonify({
-                'message': 'File successfully uploaded and processed.',
-                'data': get_object(extracted_info)  # Include the extracted information here
-            })
+            send_file_to_api(extracted_info)
+            return jsonify({'message': 'Image uploaded. Processing logic not implemented.'})
         else:
             return 'Invalid file type'
 
@@ -137,21 +131,9 @@ def get_regex_patterns_from_db():
     return db_patterns
 
 
-# def send_file_to_api(data):
-#     # url = 'http://localhost:8082/ocr/'
-#     url = 'http://localhost:8082/ocr/'
-#     headers = {'Content-Type': 'application/json'}
-#     patient_json = {
-#         "name": data.get("name"),
-#         "age": data.get("age"),
-#         "contact": data.get("contact"),
-#         "sex": data.get("sex"),
-#         "address": data.get("address")
-#     }
-#     print(patient_json)
-#     response = requests.get(url, json=patient_json, headers=headers)
-
-def get_object(data):
+def send_file_to_api(data):
+    url = 'http://localhost:8082/ocr/'
+    headers = {'Content-Type': 'application/json'}
     patient_json = {
         "name": data.get("name"),
         "age": data.get("age"),
@@ -159,7 +141,8 @@ def get_object(data):
         "sex": data.get("sex"),
         "address": data.get("address")
     }
-    return patient_json
+    print(patient_json)
+    response = requests.post(url, json=patient_json, headers=headers)
 
     
 if __name__ == '__main__':
