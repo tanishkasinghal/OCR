@@ -31,7 +31,7 @@ public class ReadImageImpl implements ReadImageService {
                 extension= originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
                 System.out.println("extension "+extension);
             } else {
-                return ResponseEntity.badRequest().body("Not a Valid image");
+                return ResponseEntity.badRequest().body("Not a Valid imagee");
             }
 
 
