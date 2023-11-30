@@ -23,8 +23,11 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http.csrf(csrf -> csrf.disable())
-                .authorizeRequests().
-                requestMatchers("/ocr/**").authenticated().requestMatchers("/auth/login").permitAll()
+                .cors(cors->cors.disable())
+                .authorizeRequests()
+                .requestMatchers("/ocr/**").authenticated()
+//                .requestMatchers("/ocr/readImage/**").authenticated()
+                .requestMatchers("/auth/login").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and().exceptionHandling(ex -> ex.authenticationEntryPoint(point))

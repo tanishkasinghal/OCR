@@ -1,10 +1,7 @@
 package com.example.demo.model;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,6 +24,9 @@ public class PatientDetails {
     @Column(name = "age")
     private String age;
 
+    @Column(name = "dob")
+    private String date_of_birth;
+
     @Column(name = "contact")
     private String contact;
 
@@ -35,5 +35,9 @@ public class PatientDetails {
 
     @Column(name = "address")
     private String address;
+
+    @Lob
+    @Column(name = "prescription", columnDefinition = "LONGBLOB")
+    private byte[] data;
 
 }

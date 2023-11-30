@@ -9,6 +9,7 @@ import re
 import requests
 from PIL import Image
 import cv2
+import base64
 import pytesseract
 
 logger.basicConfig(level="DEBUG")
@@ -43,7 +44,7 @@ def upload_file():
             
             return jsonify({
                 'message': 'File successfully uploaded and processed.',
-                'data': get_object(extracted_info)  # Include the extracted information here
+                'data': get_object(extracted_info,file)  # Include the extracted information here
             })
         elif filename.endswith(('.png', '.jpg', '.jpeg', '.gif')):
             image_path = os.path.join('uploads', filename)
@@ -52,7 +53,7 @@ def upload_file():
             # send_file_to_api(extracted_info)
             return jsonify({
                 'message': 'File successfully uploaded and processed.',
-                'data': get_object(extracted_info)  # Include the extracted information here
+                'data': get_object(extracted_info,file)  # Include the extracted information here
             })
         else:
             return 'Invalid file type'
@@ -137,27 +138,17 @@ def get_regex_patterns_from_db():
     return db_patterns
 
 
-# def send_file_to_api(data):
-#     # url = 'http://localhost:8082/ocr/'
-#     url = 'http://localhost:8082/ocr/'
-#     headers = {'Content-Type': 'application/json'}
-#     patient_json = {
-#         "name": data.get("name"),
-#         "age": data.get("age"),
-#         "contact": data.get("contact"),
-#         "sex": data.get("sex"),
-#         "address": data.get("address")
-#     }
-#     print(patient_json)
-#     response = requests.get(url, json=patient_json, headers=headers)
+def get_object(data, file):
+    # Encode file data as base64
+    encoded_file_data = base64.b64encode(file.read()).decode('utf-8')
 
-def get_object(data):
     patient_json = {
         "name": data.get("name"),
         "age": data.get("age"),
         "contact": data.get("contact"),
         "sex": data.get("sex"),
-        "address": data.get("address")
+        "address": data.get("address"),
+        "file_data": encoded_file_data  # Include the encoded file data
     }
     return patient_json
 

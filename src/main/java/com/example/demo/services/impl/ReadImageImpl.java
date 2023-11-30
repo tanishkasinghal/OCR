@@ -29,7 +29,6 @@ public class ReadImageImpl implements ReadImageService {
             String extension="";
             if (originalFilename != null && originalFilename.contains(".")) {
                 extension= originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
-                System.out.println("extension "+extension);
             } else {
                 return ResponseEntity.badRequest().body("Not a Valid imagee");
             }
@@ -43,7 +42,6 @@ public class ReadImageImpl implements ReadImageService {
             body.add("file", file.getResource());
 
             ResponseEntity<String> response = new RestTemplate().postForEntity(apiUrl, body, String.class);
-            System.out.println(response.toString());
             if (response.getStatusCode().is2xxSuccessful()) {
                 return response;
             } else {
