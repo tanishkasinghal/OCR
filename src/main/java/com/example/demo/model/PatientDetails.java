@@ -24,7 +24,7 @@ public class PatientDetails {
     @Column(name = "age")
     private String age;
 
-    @Column(name = "dob")
+    @Column(name = "date_of_birth")
     private String date_of_birth;
 
     @Column(name = "contact")

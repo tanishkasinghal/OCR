@@ -102,7 +102,7 @@ def extract_info_from_text(text, db_patterns):
         # Appending ": (.+)" to the existing regex pattern
         if fieldname in {'name', 'sex'}:
             regex_pattern = initial_pattern + r'\s*:\s*(.+)'
-        elif fieldname in {'age','contact'}:
+        elif fieldname in {'age','contact','date_of_birth'}:
             regex_pattern = initial_pattern + r'\s*:\s*(\d{4}-\d{2}-\d{2}|\d+)'
         else:
             # regex_pattern = initial_pattern + r'\s*:\s*((?:.*\n)*.*\))\s*'
@@ -148,7 +148,7 @@ def get_object(data, file):
         "contact": data.get("contact"),
         "sex": data.get("sex"),
         "address": data.get("address"),
-        "file_data": encoded_file_data  # Include the encoded file data
+        "date_of_birth":data.get("date_of_birth")
     }
     return patient_json
 

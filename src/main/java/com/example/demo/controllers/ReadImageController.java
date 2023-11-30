@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -41,7 +42,7 @@ public class ReadImageController {
     }
 
     @GetMapping("/downloadFile/{id}")
-    public ResponseEntity downloadFile(@PathVariable String id) throws FileNotFoundException {
+    public ResponseEntity<Resource> downloadFile(@PathVariable String id) throws FileNotFoundException {
         // Load file as Resource
         PatientDetails patientDetails = patientService.getFile(id);
         ByteArrayResource resource = new ByteArrayResource(patientDetails.getData());
